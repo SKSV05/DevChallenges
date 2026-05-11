@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+      sizes="96x96"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+    <title>Flip the coin | devChallenges.io</title>
+
+    <!--You are welcome to delete these styles or modify them in your own stylesheet -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        font-family: kanit;
+        padding:5rem;
+      }
+
+      .author-info {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 16px;
+      }
+
+      .author-info a {
+        text-decoration: none;
+      }
+
+      body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap:1rem;
+        background-color: #404A65;
+        color:white;
+      }
+
+      h1{
+        font-weight: 600;
+        font-size: 4ch;
+        text-shadow: 
+        -2px -1px 0 #35383F,  
+        2px -1px 0 #35383F,
+        -2px  1px 0 #35383F,
+        6px  1px 0 #35383F;
+          }
+
+      p{
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-align: center;
+      }
+      button{
+        width:10rem;
+        background-color:#1F6FB0;
+        border-radius: 7px;
+        height:40px;
+        color:white;
+        outline: none !important;
+        border:none;
+        font-weight: 600;
+        font-size: 1.25rem;
+      }
+
+      .coin-container {
+        width: 150px;
+        height: 150px;
+        perspective: 1000px;
+        margin: 50px auto;
+      }
+
+      .coin {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        /* Changed to linear for constant spin speed */
+        transition: transform 1.5s linear; 
+      }
+      .coin img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        backface-visibility: hidden;
+        object-fit: cover;
+      }
+
+      .coin-container > img{
+        position: relative;
+        left:12%;
+        top:0.5rem;
+        width:7rem;
+      }
+
+      .back {
+        transform: rotateY(180deg);
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>Flip a Coin </h1>
+    <p>Press the coin or the button to flip the coin</p>
+
+    <div class="coin-container">
+      <div class="coin" id="coin">
+        <img src="./resources/heads.svg" class="front" alt="Heads">
+        <img src="./resources/tails.svg" class="back" alt="Tails">
+      </div>
+      <img src="resources/shadow.svg" alt="">
+    </div>
+    
+
+    <h2>Heads</h2>
+
+    <button>Random</button>
+
+
+
+    <div class="author-info">
+      Coded by <a href="https://devchallenges.io/profile/38a48aac-aa4f-4ea3-8312-066d59994dc4">Skyt05</a> | Challenge by
+      <a href="https://www.devchallenges.io?ref=challenge" target="_blank"
+        >devChallenges.io</a
+      >.
+    </div>
+
+    <script>
+      let currentRotation = 0;
+
+document.querySelector("button").addEventListener("click", () => {
+  const coin = document.getElementById('coin');
+  const h2 = document.querySelector("h2");
+  const isHeads = Math.random() < 0.5;
+
+  // Calculate spins
+  const extraSpins = (Math.floor(Math.random() * 5) + 5) * 360;
+  const finalSide = isHeads ? 0 : 180;
+  currentRotation += extraSpins + finalSide;
+
+  // 1. Execute the Rotation (Linear)
+  coin.style.transform = `rotateY(${currentRotation}deg)`;
+
+  // 2. Execute the "Physical" Toss (Vertical Jump)
+  // We animate the container or the coin itself upwards
+  coin.animate([
+    { top: "0px" }                           // Landing
+  ], {
+    duration: 1500, // Matches the CSS transition time
+    fill: "forwards"
+  });
+
+  // Update text mid-way through the toss
+  setTimeout(() => {
+    h2.textContent = isHeads ? "Heads" : "Tails";
+  }, 750);
+});
+      
+    </script>
+  </body>
+</html>
